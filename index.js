@@ -4,16 +4,6 @@ import { getDatabase, ref, get, set, push, onChildAdded,onChildChanged,onChildRe
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 // validations //
 
-let configValidators = [
-    'apiKey',
-    'authDomain',
-    'databaseURL',
-    'projectId',
-    'storageBucket',
-    'messagingSenderId',
-    'appId',
-]
-
 export default class firebase {
     constructor(Config = null){
         if(!Config){
@@ -129,16 +119,13 @@ export default class firebase {
                 throw new Error('Auth will be added Soon')
             }
 
-            
+
         }
     }
 
 
     DB(){return new this.DB_CLASS();}
     AUTH(){return new this.AUTH_CLASS();}
-
-
-
 
 }
 

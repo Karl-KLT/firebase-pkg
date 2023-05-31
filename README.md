@@ -6,7 +6,9 @@
 
 ## let's started:
 - to start u need to link script tag into ur project header:
-  - ``` <script type="module" src="https://karl-klt.github.io/firebase-pkg/index.js"></script> ```
+  - ``` 
+    <script type="module" src="https://karl-klt.github.io/firebase-pkg/index.js"></script>
+    ```
 - to set ur config u need to set ur config here, like that . . . :
   - ``` 
      let FB = new firebase({

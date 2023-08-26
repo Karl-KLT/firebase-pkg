@@ -1,13 +1,18 @@
+// maded by karl :), open source firebase helper
 // imports //
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, get, set, push, onChildAdded,onChildChanged,onChildRemoved } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getDatabase, ref, get, set, push, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 // validations //
 
-export default class firebase {
+export default class firebase{
     constructor(Config = null){
-        if(!Config){
-            throw new Error('Config not found')
+        if(!Config || typeof(Config) != "object"){
+            if(!Config){
+                throw new Error('Config not found')
+            }else{
+                throw new Error('Config must be object')
+            }
         }else{
             this.app = initializeApp(Config);
         }
@@ -27,13 +32,13 @@ export default class firebase {
             // main methods //
             get(url = '/'){
                 return this.Promise(
+                    get(ref(this.db, url.toString())).then((data)=>{
 
-                    get(ref(this.db,url.toString())).then((data)=>{
-                        if(data){
+                        if(data.val()){
                             if(url == '/'){
                                 return {
-                                    'data':data.val(),
-                                    'length':Object.keys(data.val()).length
+                                    'data': data.val(),
+                                    'length': Object.keys(data.val()).length
                                 };
                             }else{
                                 return data.val()
@@ -42,6 +47,7 @@ export default class firebase {
                             return 'not found any data'
                         }
                     })
+
 
                 )
             }
@@ -116,7 +122,63 @@ export default class firebase {
         {
             constructor(){
                 this.auth = getAuth(this.app)
-                throw new Error('Auth will be added Soon')
+            }
+
+            Promise(func){
+                return Promise.resolve(func)
+            }
+
+            createCustomUser(email, password){
+
+                return this.Promise(
+                    createUserWithEmailAndPassword(this.auth, email, password).then((data)=>{
+                        return {
+                            'message':'successfully',
+                            "ok":true
+                        }
+                    }).catch(({code})=>{
+
+                        if(code == "auth/email-already-in-use"){
+                            return 'email already exists, try another email'
+                        }
+
+                    })
+                )
+
+            } 
+
+            login(email, password){
+                return this.Promise(
+                    signInWithEmailAndPassword(this.auth, email, password).then((data)=>{
+                        return {
+                            'message':'successfully',
+                            "ok":true,
+                            'user': {
+                                name: data.user.displayName,
+                                email: data.user.email,
+                                photoURL: data.user.photoURL,
+                                phoneNumber: data.user.phoneNumber,
+                                emailVerified: data.user.emailVerified,
+                                id: data.user.uid,
+                                date: data.user.metadata
+                            }
+                        }
+                    }).catch(({code})=>{
+
+                        if(code == "auth/too-many-requests"){
+                            return 'please wait, too many requests'
+                        }
+
+                        if(code == "auth/user-not-found"){
+                            return 'user not found'
+                        }
+
+                        if(code == "auth/wrong-password"){
+                            return 'wrong password'
+                        }
+
+                    })
+                )
             }
 
 

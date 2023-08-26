@@ -9,7 +9,7 @@
   - ``` 
     <script type="module" src="https://karl-klt.github.io/firebase-pkg/index.js"></script>
     ```
-- to set ur config u need to set ur config here, like that . . . :
+- to set ur config u can set ur config here, like that . . ., u will find ur config in project settings on firebase:
   - ``` 
      let FB = new firebase({
         apiKey: "xxxxxx.xxxxxx.xxxxxx",
@@ -20,13 +20,5 @@
         messagingSenderId: "xxxxxx.xxxxxx.xxxxxx",
         appId: "xxxxxx.xxxxxx.xxxxxx",
     })
-    ```
-    
-## now u can start:
-- to write ur first code with pkg u need, that code will give u all in ur DB 👍: 
-  - ``` 
-    FB.DB().get(undefined).then((data)=>{
-        console.log(data)
-    }) 
     ```
    

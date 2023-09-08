@@ -6,19 +6,20 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 // validations //
 
 export default class firebase{
+
     constructor(Config = null){
         if(!Config || typeof(Config) != "object"){
             if(!Config){
                 throw new Error('Config not found')
             }else{
-                throw new Error('Config must be object')
+                throw new Error('Config must be an object')
             }
         }else{
             this.app = initializeApp(Config);
         }
 
         // start DB
-        this.DB_CLASS = class DB
+        this.RTDB_CLASS = class DB
         {
             constructor(){
                 this.db = getDatabase(this.app);
@@ -44,7 +45,7 @@ export default class firebase{
                                 return data.val()
                             }
                         }else{
-                            return 'not found any data'
+                            return 'not found any data in this route'
                         }
                     })
 
@@ -186,7 +187,7 @@ export default class firebase{
     }
 
 
-    DB(){return new this.DB_CLASS();}
+    RTDB(){return new this.RTDB_CLASS();}
     AUTH(){return new this.AUTH_CLASS();}
 
 }
